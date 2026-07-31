@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lay-language-ai"
+version = "0.1.0"
+description = "Tools and experiments for translating technical language into clearer explanations."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Victoria Reynolds", email = "avreynol@ncsu.edu" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
