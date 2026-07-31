@@ -14,6 +14,7 @@ def test_load_rewrite_examples() -> None:
     assert examples
     assert examples[0].medical_text
     assert examples[0].plain_language
+    assert examples[0].category
 
 
 def test_write_training_jsonl(tmp_path: Path) -> None:

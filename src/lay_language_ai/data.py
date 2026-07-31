@@ -15,6 +15,7 @@ from typing import Iterable
 class RewriteExample:
     medical_text: str
     plain_language: str
+    category: str = "Uncategorized"
 
 
 def read_jsonl(path: Path) -> list[dict[str, str]]:
@@ -38,7 +39,14 @@ def load_rewrite_examples(path: Path) -> list[RewriteExample]:
         plain_language = row.get("plain_language", "").strip()
         if not medical_text or not plain_language:
             raise ValueError(f"Each row in {path} must include medical_text and plain_language")
-        examples.append(RewriteExample(medical_text=medical_text, plain_language=plain_language))
+        category = row.get("category", "Uncategorized").strip() or "Uncategorized"
+        examples.append(
+            RewriteExample(
+                medical_text=medical_text,
+                plain_language=plain_language,
+                category=category,
+            )
+        )
     return examples
 
 
@@ -55,9 +63,9 @@ def write_training_jsonl(examples: Iterable[RewriteExample], output_path: Path) 
     with output_path.open("w", encoding="utf-8") as file:
         for example in examples:
             payload = {
+                "category": example.category,
                 "medical_text": example.medical_text,
                 "plain_language": example.plain_language,
                 "text": format_instruction(example),
             }
             file.write(json.dumps(payload, ensure_ascii=True) + "\n")
-
