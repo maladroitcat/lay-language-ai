@@ -27,7 +27,7 @@ def main() -> None:
     print("Base Model:")
     print(comparison.base_output)
     print()
-    print("Adapted Model:")
+    print("Fine-Tuned Model:")
     print(comparison.adapted_output)
 
 

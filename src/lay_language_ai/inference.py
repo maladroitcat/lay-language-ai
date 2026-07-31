@@ -60,14 +60,14 @@ class Rewriter:
         return self.generate(
             model=self.base_model,
             tokenizer=self.tokenizer,
-            prompt=base_prompt(medical_text),
+            prompt=rewrite_prompt(medical_text),
         )
 
     def adapted_rewrite(self, medical_text: str) -> str:
         return self.generate(
             model=self.fine_tuned_model,
             tokenizer=self.fine_tuned_tokenizer,
-            prompt=adapted_prompt(medical_text),
+            prompt=rewrite_prompt(medical_text),
         )
 
     def generate(self, model: AutoModelForSeq2SeqLM, tokenizer: AutoTokenizer, prompt: str) -> str:
@@ -92,21 +92,11 @@ def select_device() -> torch.device:
     return torch.device("cpu")
 
 
-def base_prompt(medical_text: str) -> str:
-    return (
-        "Rewrite this medical note in plain English for a patient. "
-        "Do not add new medical facts. Keep the meaning accurate.\n\n"
-        f"Medical note: {medical_text}\n\n"
-        "Plain English:"
-    )
-
-
-def adapted_prompt(medical_text: str) -> str:
+def rewrite_prompt(medical_text: str) -> str:
     return (
         "Rewrite this medical note in patient-friendly plain English. "
         "Explain medical jargon briefly and preserve the original meaning.\n\n"
         f"Medical note: {medical_text}\n\n"
         "Patient-friendly rewrite:"
     )
-
 

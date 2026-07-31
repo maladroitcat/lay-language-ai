@@ -17,7 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from lay_language_ai.data import RewriteExample, load_rewrite_examples
-from lay_language_ai.inference import adapted_prompt, select_device
+from lay_language_ai.inference import rewrite_prompt, select_device
 
 
 RAW_PATH = PROJECT_ROOT / "data" / "raw" / "medical_rewrites.jsonl"
@@ -44,7 +44,7 @@ class RewriteDataset(Dataset[dict[str, torch.Tensor]]):
     def __getitem__(self, index: int) -> dict[str, torch.Tensor]:
         example = self.examples[index]
         inputs = self.tokenizer(
-            adapted_prompt(example.medical_text),
+            rewrite_prompt(example.medical_text),
             max_length=self.max_input_length,
             truncation=True,
             padding="max_length",
@@ -129,4 +129,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
